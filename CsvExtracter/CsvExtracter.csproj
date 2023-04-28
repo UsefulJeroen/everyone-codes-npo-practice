@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Data\cameras-defb.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

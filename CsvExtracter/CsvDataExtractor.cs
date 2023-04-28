@@ -1,5 +1,4 @@
-﻿using CsvExtracter.Models;
-using CsvHelper.Configuration;
+﻿using CsvHelper.Configuration;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
@@ -10,17 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvExtracter.Mappers.TypeConverters;
 using CsvExtracter.Mappers;
+using Models;
 
 namespace CsvExtracter
 {
-    public interface ICsvDataExtractorService
+    public static class CsvDataExtractor
     {
-        Task<IEnumerable<Camera>> ExtractCameraData();
-    }
-
-    public class CsvDataExtractor
-    {
-        public async Task<IEnumerable<Camera>> ExtractCameraData()
+        public static async Task<List<Camera>> ExtractCameraData()
         {
             var buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var filePath = buildDir + @"\Data\cameras-defb.csv";
@@ -44,7 +39,7 @@ namespace CsvExtracter
             await csvReader.ReadAsync();
             csvReader.ReadHeader();
 
-            return csvReader.GetRecords<Camera>().DistinctBy(c => c.Id);
+            return csvReader.GetRecords<Camera>().DistinctBy(c => c.Id).ToList();
         }
     }
 }

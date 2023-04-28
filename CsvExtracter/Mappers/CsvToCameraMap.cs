@@ -1,6 +1,6 @@
 ﻿using CsvExtracter.Mappers.TypeConverters;
-using CsvExtracter.Models;
 using CsvHelper.Configuration;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
