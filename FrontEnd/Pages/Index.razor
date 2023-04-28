@@ -1,0 +1,44 @@
+﻿@page "/"
+@using Db.Repositories;
+@using Models;
+@inject ICameraRepository CameraRepository
+
+<PageTitle>Cameras</PageTitle>
+
+@if (cameras == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Latitude</th>
+                <th>Longtitude</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var camera in cameras)
+            {
+                <tr>
+                    <td>@camera.Id</td>
+                    <td>@camera.Name</td>
+                    <td>@camera.Latitude</td>
+                    <td>@camera.Longtitude</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Camera>? cameras;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cameras = (await CameraRepository.GetAllAsync()).ToList();
+    }
+}

@@ -399,3 +399,6 @@ FodyWeavers.xsd
 /Api/Cameras.db
 /Api/Cameras.db-wal
 /Api/Cameras.db-shm
+/FrontEnd/Cameras.db-wal
+/FrontEnd/Cameras.db-shm
+/FrontEnd/Cameras.db
