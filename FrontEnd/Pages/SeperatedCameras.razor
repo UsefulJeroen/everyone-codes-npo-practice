@@ -1,0 +1,105 @@
+﻿@page "/seperatedCameras"
+@using Db.Repositories;
+@using Models;
+@inject ICameraRepository CameraRepository
+
+<PageTitle>Seperated cameras</PageTitle>
+
+<p>
+    Het eerste onderdeel van de front-end bestaat uit het ophalen van de data uit de API.
+    <br />
+    Toon de data verspreid over vier kolommen in de gegeven code/index.html.
+    <br />
+    De spreiding van de data moet gebeuren volgens de onderstaande regels en op basis van het number van de camera:
+    <br />
+    - Als het number van de camera deelbaar is door 3, dan belandt hij in de eerste kolom
+    <br />
+    - Als het number van de camera deelbaar is door 5, dan belandt hij in de tweede kolom
+    <br />
+    - Als het number van de camera deelbaar is door zowel 3 als door 5, dan belandt hij in de derde kolom
+    <br />
+    - Als het number van de camera niet deelbaar is door 3 en niet deelbaar is door 5, dan belandt hij in de laatste kolom
+    <br />
+</p>
+
+@if (maxLength == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Column1</th>
+                <th>Column2</th>
+                <th>Column3</th>
+                <th>Column4</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < maxLength; i++)
+            {
+                <tr>
+                    <td>
+                        @if (camerasColumnOne != null && camerasColumnOne.Count > i)
+                        {
+                            <p>@camerasColumnOne[i].Id</p>
+                            <p>@camerasColumnOne[i].Name</p>
+                            <p>@camerasColumnOne[i].Latitude</p>
+                            <p>@camerasColumnOne[i].Longtitude</p>
+                        }
+                    </td>
+                    <td>
+                        @if (camerasColumnTwo != null && camerasColumnTwo.Count > i)
+                        {
+                            <p>@camerasColumnTwo[i].Id</p>
+                            <p>@camerasColumnTwo[i].Name</p>
+                            <p>@camerasColumnTwo[i].Latitude</p>
+                            <p>@camerasColumnTwo[i].Longtitude</p>
+                        }
+                    </td>
+                    <td>
+                        @if (camerasColumnThree != null && camerasColumnThree.Count > i)
+                        {
+                            <p>@camerasColumnThree[i].Id</p>
+                            <p>@camerasColumnThree[i].Name</p>
+                            <p>@camerasColumnThree[i].Latitude</p>
+                            <p>@camerasColumnThree[i].Longtitude</p>
+                        }
+                    </td>
+                    <td>
+                        @if (camerasColumnFour != null && camerasColumnFour.Count > i)
+                        {
+                            <p>@camerasColumnFour[i].Id</p>
+                            <p>@camerasColumnFour[i].Name</p>
+                            <p>@camerasColumnFour[i].Latitude</p>
+                            <p>@camerasColumnFour[i].Longtitude</p>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Camera>? camerasColumnOne;
+    private List<Camera>? camerasColumnTwo;
+    private List<Camera>? camerasColumnThree;
+    private List<Camera>? camerasColumnFour;
+
+    private int? maxLength;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var allCameras = (await CameraRepository.GetAllAsync()).ToList();
+
+        camerasColumnOne = allCameras.FindAll(c => c.Id % 3 == 0);
+        camerasColumnTwo = allCameras.FindAll(c => c.Id % 5 == 0);
+        camerasColumnThree = allCameras.FindAll(c => c.Id % 3 == 0 && c.Id % 5 == 0);
+        camerasColumnFour = allCameras.FindAll(c => c.Id % 3 != 0 && c.Id % 5 != 0);
+
+        maxLength = Math.Max(Math.Max(Math.Max(camerasColumnOne.Count, camerasColumnTwo.Count), camerasColumnThree.Count), camerasColumnFour.Count);
+    }
+}
